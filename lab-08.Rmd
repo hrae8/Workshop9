@@ -1,6 +1,6 @@
 ---
 title: "Lab 08 - Predicting rain"
-author: "INSERT NAME HERE"
+author: "Hannah Rae"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -64,13 +64,25 @@ weather %>%
 
 1. Are there any missing values in our variable of interest `RainTomorrow`? If so, we filter them out and save the new dataset as `weather_noNA`. 
 
+1)there are 3267 missing values in "RainTomorrow" variable, 3261 in "RainToday", n = 3148 (not average but count of how many rain today) = Canberra
 ```{r}
+sum(is.na(weather$RainTomorrow))
+weather_no_NA <- weather %>%
+  drop_na(RainTomorrow)
+
+sum(is.na(weather$RainToday))
+weather_no_NA_today <- weather %>%
+  drop_na(RainToday) %>%
+  group_by(Location) %>%
+  arrange(desc(Location)) %>%
+  count(RainToday = "Yes")
+  
+
+
+
+
 
 ```
-
-2. Which cities are the ones with more rain days? To do this, let's analyze the `RainToday` variable. 
-
-```{r}
 
 ```
 
@@ -79,10 +91,8 @@ weather %>%
 We will focus our analysis on the city of `Portland`.
 Remove `eval=FALSE` from below once you have defined the object `weather_noNA`.
 
-```{r eval=FALSE}
-# remove eval=FALSE
-weather_Portland <- weather_noNA %>%
-  filter(Location == "Portland")
+```{r}
+
 ```
 
 1. Try to predict `RainTomorrow` by fitting a linear regression using the variable `RainToday` and print the output using `tidy()`.
